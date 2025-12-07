@@ -12,36 +12,34 @@ public class Courier {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
-
     }
 
     public static Courier generateRandomCourier() {
-      String login = "Ninja" + ThreadLocalRandom.current().nextInt(1000, 100_10000);
-      return new Courier(login, "1234", "saske");
+        String login = "Ninja" + ThreadLocalRandom.current().nextInt(1000, 100_10000);
+        return new Courier(login, "1234", "saske");
     }
 
-    public String getFirstName() {
-        return firstName;
+
+    public static Courier withNoLogin() {
+        return new Courier(null, "1234", "saske");
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public static Courier withNoPassword() {
+        return new Courier("Ninja" + ThreadLocalRandom.current().nextInt(1000, 100_10000), null, "saske");
     }
+
+    public static Courier withoutFirstName() {
+        return new Courier("Ninja" + ThreadLocalRandom.current().nextInt(1000, 100_10000), "1234", null);
+    }
+
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getLogin() {
         return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
 

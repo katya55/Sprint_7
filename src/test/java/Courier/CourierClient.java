@@ -1,6 +1,6 @@
 package Courier;
 
-import Config.Client;
+import config.Client;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import java.net.HttpURLConnection;

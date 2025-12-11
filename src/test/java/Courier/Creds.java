@@ -1,24 +1,22 @@
 package Courier;
 
+import lombok.Value;
+import net.datafaker.Faker;
+
 import java.util.concurrent.ThreadLocalRandom;
 
+@Value
 public class Creds {
+   public static Faker faker = new Faker();
+    String login;
+    String password;
 
-    private final String login;
-    private final String password;
-
-
-    public Creds(String login, String password) {
-        this.login = login;
-        this.password = password;
-    }
-
-    public static Creds WithoutLogin() {
+    public static Creds withoutLogin() {
         return new Creds(null, "1234");
     }
 
-    public static Creds WithoutPassword() {
-        return new Creds("Ninja" + ThreadLocalRandom.current().nextInt(1000, 100_10000), null);
+    public static Creds withoutPassword() {
+        return new Creds(faker.name().firstName() + ThreadLocalRandom.current().nextInt(1000, 100_10000), null);
     }
 
     public static Creds empty() {
@@ -30,13 +28,5 @@ public class Creds {
         return new Creds(one.getLogin(), one.getPassword());
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
 
 }

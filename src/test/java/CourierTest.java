@@ -1,6 +1,7 @@
 import Courier.Courier;
 import Courier.Creds;
 import Courier.CourierClient;
+
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +24,7 @@ public class CourierTest {
 
     //создание курьера
     @Test
-    @DisplayName("Удачное создание курьера")
+    @DisplayName("Успешное создание и логин курьера")
     public void createNewCourier() {
         var courier = Courier.generateRandomCourier();
         ValidatableResponse createResponse = courierClient.createCourier(courier);
@@ -65,7 +66,7 @@ public class CourierTest {
     @Test
     @DisplayName("Логин курьера без логина")
     public void logCourierWithoutLogin() {
-        Creds creds = Creds.WithoutLogin();
+        Creds creds = Creds.withoutLogin();
         ValidatableResponse createResponse = courierClient.logIn(creds);
         courierClient.checkRequiredFields(createResponse);
     }
@@ -73,7 +74,7 @@ public class CourierTest {
     @Test
     @DisplayName("Логин курьера без пароля")
     public void logCourierWithoutPassword() {
-        Creds creds = Creds.WithoutPassword();
+        Creds creds = Creds.withoutPassword();
         ValidatableResponse createResponse = courierClient.logIn(creds);
         courierClient.checkRequiredFields(createResponse);
     }
@@ -89,20 +90,34 @@ public class CourierTest {
     @Test
     @DisplayName("Логин курьера с неправильным логином")
     public void loginWithWrongLogin() {
-        Courier courier = Courier.generateRandomCourier();
-        Creds incorrectLogin = new Creds("qwert", courier.getPassword());
-        ValidatableResponse createResponse = courierClient.logIn(incorrectLogin);
-        courierClient.checkWrongLoginOrPassword(createResponse);
+        var courier = Courier.generateRandomCourier();
+        ValidatableResponse createResponse = courierClient.createCourier(courier);
+        courierClient.checkCreated(createResponse);
+
+       Creds incorrectLogin = new Creds("qwert", courier.getPassword());
+        ValidatableResponse Response = courierClient.logIn(incorrectLogin);
+        courierClient.checkWrongLoginOrPassword(Response);
+
+        var creds = Creds.getCreds(courier);
+        ValidatableResponse loginResponse = courierClient.logIn(creds);
+        courierId = courierClient.checkLogin(loginResponse);
+
     }
 
     @Test
     @DisplayName("Логин курьера с неправильным паролем")
     public void loginWithWrongPassword() {
-        Courier courier = Courier.generateRandomCourier();
+        var courier = Courier.generateRandomCourier();
+        ValidatableResponse createResponse = courierClient.createCourier(courier);
+        courierClient.checkCreated(createResponse);
+
         Creds incorrectPassword = new Creds(courier.getLogin(), "4444");
-        ValidatableResponse createResponse = courierClient.logIn(incorrectPassword);
-        courierClient.checkWrongLoginOrPassword(createResponse);
+        ValidatableResponse response = courierClient.logIn(incorrectPassword);
+        courierClient.checkWrongLoginOrPassword(response);
+
+        var creds = Creds.getCreds(courier);
+        ValidatableResponse loginResponse = courierClient.logIn(creds);
+        courierId = courierClient.checkLogin(loginResponse);
     }
-
-
 }
+

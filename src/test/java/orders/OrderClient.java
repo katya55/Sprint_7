@@ -1,4 +1,4 @@
-package Orders;
+package orders;
 
 import config.Client;
 import io.qameta.allure.Step;

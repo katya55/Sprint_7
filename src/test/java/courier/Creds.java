@@ -1,4 +1,4 @@
-package Courier;
+package courier;
 
 import lombok.Value;
 import net.datafaker.Faker;

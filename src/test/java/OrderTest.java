@@ -1,5 +1,5 @@
-import Orders.Order;
-import Orders.OrderClient;
+import orders.Order;
+import orders.OrderClient;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

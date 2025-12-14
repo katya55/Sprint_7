@@ -1,10 +1,12 @@
-package Courier;
+package courier;
 
 import config.Client;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
+
 import java.net.HttpURLConnection;
 import java.util.Map;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -55,26 +57,10 @@ public class CourierClient extends Client {
                 .body(Map.of("id", courierId))
                 .when()
                 .delete("/courier/" + courierId)
-                .then().log().all();
-    }
-
-    @Step("Создание дубликата курьера")
-    public ValidatableResponse createDuplicateCourier(Courier courier) {
-        spec()
-                .body(courier)
-                .when()
-                .post("/courier")
                 .then().log().all()
-                .statusCode(HttpURLConnection.HTTP_CREATED);
-
-        return spec()
-                .body(courier)
-                .when()
-                .post("/courier")
-                .then()
-                .log().all();
+                .statusCode(200)
+                .body("ok", equalTo(true));
     }
-
 
     @Step("Ошибка при создании двух одинаковых курьеров")
     public void checkErrorCreateDuplicateCourier(ValidatableResponse createResponse) {

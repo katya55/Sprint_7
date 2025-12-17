@@ -51,8 +51,13 @@ public class CourierTest {
         courierClient.checkCreated(createResponse);
         courierCreated = true;
 
+        var creds = Creds.getCreds(courier);
+        ValidatableResponse loginResponse = courierClient.logIn(creds);
+        courierId = courierClient.checkLogin(loginResponse);
+
         ValidatableResponse createDuplicateCourier = courierClient.createCourier(courier);
         courierClient.checkErrorCreateDuplicateCourier(createDuplicateCourier );
+
     }
 
     @Test
